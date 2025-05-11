@@ -3,7 +3,7 @@
 
 v.1.0.0の仕様をこちらに示します。
 
-https://github.com/Sorakime/Sorakime.github.io/blob/d60a5b460c17021baf74ad9c26e774d05108e553/mncr/project/elemental/Elemental-v1.pdf
+[assets/Elemental-v1.pdf](https://github.com/thinking-grp/elemental/blob/main/assets/Elemental-v1.pdf)
 
 ## 追加事項
 
