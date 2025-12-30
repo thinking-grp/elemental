@@ -1,4 +1,4 @@
 :where(*:not(html):not(body)) {
-    background: var(--elm2-test);
-    color: var(--elm2-test-text);
-}
+  background: var(--elm2-test);
+  color: var(--elm2-test-text);
+}/*# sourceMappingURL=test.css.map */

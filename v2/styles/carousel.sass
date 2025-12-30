@@ -1,0 +1,64 @@
+/* carousel.css*/
+
+elm2-carousel
+  &.elm2
+    display: flex
+    flex-wrap: nowrap
+    align-content: center
+    padding: 8px
+    gap: 8px
+    text-wrap-mode: nowrap
+    width: 400px
+    overflow: scroll
+    scrollbar-width: none
+    height: 80px
+    --radius:calc(var(--elm2-default-radius) + 8px)
+    --button-width:30%
+
+    elm2-button
+      width: var(--button-width)
+      flex-shrink: 0
+      --radius:var(--elm2-default-radius)
+
+  &[scale-effect].elm2 elm2-button
+    padding: 0px
+    flex-shrink: 0
+    transition: all 0.3s var(--elm2-default-bezier), position 0s
+    animation: elm2-carousel-in cubic-bezier(0.5, 0, 0.5, 1) both
+    animation-timeline: view(inline)
+
+    animation-range: entry 0% exit 100%
+    --radius:var(--elm2-default-radius)
+
+@keyframes elm2-carousel-in
+  0%
+    width: calc(var(--button-width) /3)
+
+  40%, 60%
+    width: var(--button-width)
+
+  100%
+    width: calc(var(--button-width) /3)
+
+button.elm2
+  &[carousel]
+    padding: 0px
+    width: 100%
+    overflow: hidden
+    display: flex
+    align-items: center
+    align-content: center
+    justify-content: center
+    flex-wrap: nowrap
+
+  &[style]
+    background: #000
+
+elm2-carousel[image].elm2 elm2-button
+  background-image: var(--src-url)
+  background-size: auto 150%
+  background-position: center
+  background-repeat: no-repeat
+
+  button
+    opacity: 0
