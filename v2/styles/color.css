@@ -64,24 +64,43 @@
   --elm2-gray-98:#EFEFEF;
   --elm2-gray-99:#F7F7F7;
   --elm2-gray-100:#FFFFFF;
+  --elm2-black: var(--elm2-gray-0) /* 黒 */;
+  --elm2-black-light: var(--elm2-gray-10) /* 明るい黒（メインテキスト等） */;
+  --elm2-gray-darker: var(--elm2-gray-30) /* かなり濃いグレー */;
+  --elm2-gray-dark: var(--elm2-gray-50) /* 濃いグレー */;
+  --elm2-gray: var(--elm2-gray-70) /* 中間色グレー */;
+  --elm2-gray-light: var(--elm2-gray-90) /* 薄いグレー */;
+  --elm2-gray-lighter: var(--elm2-gray-95) /* かなり薄いグレー */;
+  --elm2-white-dark: var(--elm2-gray-98) /* 少し暗い白（背景のセクション分け等） */;
+  --elm2-white: var(--elm2-gray-100) /* 純粋な白 */;
+  /* --- Brand / Accent Colors (ブランド・アクセントカラー) --- */
+  --elm2-red: var(--elm2-red-50) /* メインのレッド */;
+  --elm2-yellow: var(--elm2-yellow-50) /* メインのイエロー */;
+  --elm2-green: var(--elm2-green-50) /* メインのグリーン */;
+  --elm2-blue: var(--elm2-blue-50) /* メインのブルー */;
+  /* --- Semantic Aliases (用途別の別名定義例) --- */
+  --elm2-text-primary: var(--elm2-black-light);
+  --elm2-text-body: var(--elm2-gray-darker);
+  --elm2-border: var(--elm2-gray-lighter);
+  --elm2-bg-surface: var(--elm2-white-dark);
   /* --- 2. Semantic Mappings: Light Mode (Default) ---*/
-  --md-sys-color-primary:var(--elm2-gray-0);
-  --md-sys-color-on-primary:var(--elm2-gray-100);
-  --md-sys-color-primary-container:var(--elm2-gray-90);
-  --md-sys-color-on-primary-container:var(--elm2-gray-10);
-  --md-sys-color-secondary:var(--elm2-blue-50);
-  --md-sys-color-on-secondary:var(--elm2-gray-100);
-  --md-sys-color-secondary-container:var(--elm2-blue-90);
-  --md-sys-color-on-secondary-container:var(--elm2-blue-10);
-  --md-sys-color-surface:var(--elm2-gray-98);
+  --elm2-sys-color-primary:var(--elm2-gray-0);
+  --elm2-sys-color-on-primary:var(--elm2-gray-100);
+  --elm2-sys-color-primary-container:var(--elm2-gray-90);
+  --elm2-sys-color-on-primary-container:var(--elm2-gray-10);
+  --elm2-sys-color-secondary:var(--elm2-blue-50);
+  --elm2-sys-color-on-secondary:var(--elm2-gray-100);
+  --elm2-sys-color-secondary-container:var(--elm2-blue-90);
+  --elm2-sys-color-on-secondary-container:var(--elm2-blue-10);
+  --elm2-sys-color-surface:var(--elm2-gray-98);
   /* 배경: --elm2-white-dark*/
-  --md-sys-color-on-surface:var(--elm2-gray-10);
+  --elm2-sys-color-on-surface:var(--elm2-gray-10);
   /* 텍스트: --elm2-black-light*/
-  --md-sys-color-surface-variant:var(--elm2-gray-95);
-  --md-sys-color-on-surface-variant:var(--elm2-gray-40);
-  --md-sys-color-outline:var(--elm2-gray-80);
-  --md-sys-color-error:var(--elm2-red-50);
-  --md-sys-color-on-error:var(--elm2-gray-100);
+  --elm2-sys-color-surface-variant:var(--elm2-gray-95);
+  --elm2-sys-color-on-surface-variant:var(--elm2-gray-40);
+  --elm2-sys-color-outline:var(--elm2-gray-80);
+  --elm2-sys-color-error:var(--elm2-red-50);
+  --elm2-sys-color-on-error:var(--elm2-gray-100);
 }
 
 /* --- 3. Semantic Mappings: Dark Mode ---*/
@@ -90,20 +109,20 @@
     --elm2-test:#e4e8ed11;
     --elm2-test-text:#e3e8edd9;
     --elm2-test-sub:#dce7edd8;
-    --md-sys-color-primary:var(--elm2-gray-100);
-    --md-sys-color-on-primary:var(--elm2-gray-0);
-    --md-sys-color-primary-container:var(--elm2-gray-30);
-    --md-sys-color-on-primary-container:var(--elm2-gray-98);
-    --md-sys-color-secondary:var(--elm2-blue-70);
-    --md-sys-color-on-secondary:var(--elm2-gray-10);
-    --md-sys-color-surface:var(--elm2-gray-0);
+    --elm2-sys-color-primary:var(--elm2-gray-100);
+    --elm2-sys-color-on-primary:var(--elm2-gray-0);
+    --elm2-sys-color-primary-container:var(--elm2-gray-30);
+    --elm2-sys-color-on-primary-container:var(--elm2-gray-98);
+    --elm2-sys-color-secondary:var(--elm2-blue-70);
+    --elm2-sys-color-on-secondary:var(--elm2-gray-10);
+    --elm2-sys-color-surface:var(--elm2-gray-0);
     /* 배경: --elm2-black*/
-    --md-sys-color-on-surface:var(--elm2-gray-98);
+    --elm2-sys-color-on-surface:var(--elm2-gray-98);
     /* 텍스트: --elm2-white-dark*/
-    --md-sys-color-surface-variant:var(--elm2-gray-20);
-    --md-sys-color-on-surface-variant:var(--elm2-gray-80);
-    --md-sys-color-outline:var(--elm2-gray-50);
-    --md-sys-color-error:var(--elm2-red-70);
-    --md-sys-color-on-error:var(--elm2-red-10);
+    --elm2-sys-color-surface-variant:var(--elm2-gray-20);
+    --elm2-sys-color-on-surface-variant:var(--elm2-gray-80);
+    --elm2-sys-color-outline:var(--elm2-gray-50);
+    --elm2-sys-color-error:var(--elm2-red-70);
+    --elm2-sys-color-on-error:var(--elm2-red-10);
   }
 }/*# sourceMappingURL=color.css.map */

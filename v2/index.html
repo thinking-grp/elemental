@@ -148,6 +148,18 @@
         
         </elm2-carousel>
 
+        <h3>テキスト</h3>
+
+        <link href="styles/input.css" rel="stylesheet">
+
+
+        <elm2-input id="search">
+            何か入力してください...
+        </elm2-input>
+
+        <elm2-input id="search" disabled>
+            何か入力してください...
+        </elm2-input>
 
 
         
@@ -156,7 +168,7 @@
 
 
     <script>
-    
+
     class Elm2BaseElement extends HTMLElement {
     upgradeElement(tagName, className) {
         if (this.querySelector(`:scope > ${tagName}.${className}`)) return;
@@ -167,14 +179,18 @@
         const children = Array.from(this.childNodes);
         this.syncAttributes(this, inner);
         
+        // 子要素（テキスト等）を一旦内部要素へ移動
         children.forEach(child => {
             inner.appendChild(child);
         });
         
         this.appendChild(inner);
 
+        // 属性の変更を監視して同期
         const observer = new MutationObserver(() => this.syncAttributes(this, inner));
         observer.observe(this, { attributes: true });
+        
+        return inner;
     }
 
     syncAttributes(source, target) {
@@ -186,35 +202,27 @@
     }
 }
 
+/**
+ * corner-shape のサポート判定
+ */
 function checkCornerShapeSupport() {
-    // 1. テスト用のダミー要素を作成
     const testEl = document.createElement('div');
-    
-    // 2. corner-shape を設定してみる
-    // (将来的なプロパティ名の変更に備えて、複数の可能性をチェック)
     const props = ['corner-shape', '-webkit-corner-shape', 'border-corner-shape'];
     
     const isSupported = props.some(prop => {
         testEl.style[prop] = 'super-ellipse';
-        // ブラウザが認識できない値の場合、styleプロパティは空（""）になる
         return testEl.style[prop] !== '';
     });
 
-    // 3. 判定結果に基づいて変数をセット
     if (!isSupported) {
-        // 未対応の場合のみ 1 をセット
         document.documentElement.style.setProperty('--elm2-corner-superellipse', '1');
         console.log('corner-shape: Not Supported');
     } 
 }
 
-function initElm2Carousels() {
-    const carousels = document.querySelectorAll('elm2-carousel');
-    carousels.forEach((el) => {
-        el.classList.add('elm2');
-    });
-}
-
+/**
+ * コンポーネント定義: ボタン
+ */
 function elm2Button() {
     class Elm2Button extends Elm2BaseElement {
         connectedCallback() {
@@ -226,19 +234,55 @@ function elm2Button() {
     }
 }
 
+/**
+ * コンポーネント定義: インプット (新規)
+ */
+function elm2Input() {
+    class Elm2Input extends Elm2BaseElement {
+        connectedCallback() {
+            // 内部に input 要素を作成
+            const innerInput = this.upgradeElement('input', 'elm2');
+            
+            // <elm2-input>の中身のテキストを placeholder に変換する
+            // input要素は子要素（テキストノード）を保持できないための処理
+            const textContent = innerInput.textContent.trim();
+            if (textContent && !innerInput.hasAttribute('placeholder')) {
+                innerInput.setAttribute('placeholder', textContent);
+                innerInput.textContent = ''; // 内部のテキストノードをクリア
+            }
+        }
+    }
+    if (!customElements.get('elm2-input')) {
+        customElements.define('elm2-input', Elm2Input);
+    }
+}
+
+/**
+ * カルーセルの初期化
+ */
+function initElm2Carousels() {
+    const carousels = document.querySelectorAll('elm2-carousel');
+    carousels.forEach((el) => {
+        el.classList.add('elm2');
+    });
+}
+
+/**
+ * 全コンポーネントの初期化実行
+ */
 function initElm2Components() {
-    // 1. corner-shape の判定と変数リセット
     checkCornerShapeSupport();
-    // 2. カスタム要素（ボタン）の定義
     elm2Button();
-    // 3. カルーセルのクラス付与
+    elm2Input(); // 追加されたコンポーネント
     initElm2Carousels();
 }
 
+// 実行
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initElm2Components);
 } else {
     initElm2Components();
 }
+
     </script>
 </html>
