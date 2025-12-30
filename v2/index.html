@@ -243,8 +243,10 @@ function elm2Input() {
             // 内部に input 要素を作成
             const innerInput = this.upgradeElement('input', 'elm2');
             
+            // --- オートコンプリートをオフにする設定 ---
+            innerInput.setAttribute('autocomplete', 'off');
+            
             // <elm2-input>の中身のテキストを placeholder に変換する
-            // input要素は子要素（テキストノード）を保持できないための処理
             const textContent = innerInput.textContent.trim();
             if (textContent && !innerInput.hasAttribute('placeholder')) {
                 innerInput.setAttribute('placeholder', textContent);

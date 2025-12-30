@@ -1,16 +1,25 @@
+elm2-input
+  background: #0000
+
 input.elm2
-  background:unset
+  background: var(--elm2-white)
   border:0px
   padding:16px
   --radius:var(--elm2-default-radius)
   outline:0px;
   width: calc(100% - 32px)
-  box-shadow: 0 0 0 0px var(--elm2-test-sub)
+  box-shadow: 0 0 0 0px var(--elm2-gray-lighter)
   transition: all 0.3s var(--elm2-default-bezier), position 0s
   
   &:focus
-    box-shadow: 0 0 0 2px var(--elm2-test-sub),0 6px 16px #0004
+    box-shadow: 0 0 0 2px var(--elm2-gray-lighter),0 6px 16px #0004
 
   &[primary]
     box-shadow: none !important
     opacity: 0.8 !important
+
+  &[disabled]
+    box-shadow: none !important
+    opacity: 0.8 !important
+    background: var(--elm2-gray-lighter) !important
+    color: var(--elm2-gray) !important

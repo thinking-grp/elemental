@@ -13,7 +13,7 @@
 }
 
 body {
-  background: var(--md-sys-color-surface);
+  background: var(--elm2-white-dark);
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;

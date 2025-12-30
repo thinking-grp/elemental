@@ -1,16 +1,27 @@
+elm2-input {
+  background: rgba(0, 0, 0, 0);
+}
+
 input.elm2 {
+  background: var(--elm2-white);
   border: 0px;
   padding: 16px;
   --radius:var(--elm2-default-radius);
   outline: 0px;
   width: calc(100% - 32px);
-  box-shadow: 0 0 0 0px var(--elm2-test-sub);
+  box-shadow: 0 0 0 0px var(--elm2-gray-lighter);
   transition: all 0.3s var(--elm2-default-bezier), position 0s;
 }
 input.elm2:focus {
-  box-shadow: 0 0 0 2px var(--elm2-test-sub), 0 6px 16px rgba(0, 0, 0, 0.2666666667);
+  box-shadow: 0 0 0 2px var(--elm2-gray-lighter), 0 6px 16px rgba(0, 0, 0, 0.2666666667);
 }
 input.elm2[primary] {
   box-shadow: none !important;
   opacity: 0.8 !important;
+}
+input.elm2[disabled] {
+  box-shadow: none !important;
+  opacity: 0.8 !important;
+  background: var(--elm2-gray-lighter) !important;
+  color: var(--elm2-gray) !important;
 }/*# sourceMappingURL=input.css.map */
