@@ -1,0 +1,23 @@
+*{
+    font-family: "Barlow", "Noto Sans JP", sans-serif;
+    line-height: 1.5 !important;
+    -webkit-font-smoothing: antialiased;
+    corner-shape:superellipse(var(--elm2-corner-superellipse));
+    border-radius: calc(var(--radius) * var(--elm2-corner-superellipse));
+}
+:root{
+    --elm2-corner-superellipse:1.6;
+    --elm2-default-radius:10px;
+    --elm2-default-bezier:cubic-bezier(.42,.21,0,1);
+}
+body {
+    background: var(--md-sys-color-surface);
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 5px;
+}
+h1,h2,h3,h4{
+    margin:0.3em 0px;
+    background:#0000;
+}
