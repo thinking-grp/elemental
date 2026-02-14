@@ -1,0 +1,33 @@
+.elm2-snackbar-container
+  position: fixed
+  left: 50%
+  bottom: 16px
+  transform: translateX(-50%) translateY(120%)
+  background: var(--elm2-snackbar-bg)
+  color: var(--elm2-gray-100)
+  padding: 16px 20px
+  padding-right: 12px
+  --radius: var(--elm2-default-radius)
+  font-size: 16px
+  z-index: var(--elm2-snackbar-z)
+  opacity: 0
+  transition: transform 0.5s var(--elm2-default-bezier), opacity 0.5s var(--elm2-default-bezier)
+  min-width: 250px
+  display: flex
+  justify-content: space-between
+  box-shadow: 0 2px 11px rgba(0, 0, 0, 0.2)
+  background-color: var(--elm2-sys-color-primary)
+
+  &.is-visible
+    transform: translateX(-50%) translateY(0)
+    opacity: 1
+
+.elm2-snackbar-close
+  border: none
+  background: transparent
+  position: relative
+  top: 2px
+
+.elm2-snackbar-message,
+.elm2-snackbar-close
+  filter: drop-shadow(0px 4px 8px #000a)

@@ -34,12 +34,15 @@ elm2-carousel
 @keyframes elm2-carousel-in
   0%
     width: calc(var(--button-width) /3)
+    opacity: 0.4
 
   40%, 60%
     width: var(--button-width)
+    opacity: 1
 
   100%
     width: calc(var(--button-width) /3)
+    opacity: 0.4
 
 button.elm2
   &[carousel]

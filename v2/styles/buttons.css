@@ -27,14 +27,16 @@ button.elm2[primary] {
   background: var(--elm2-black);
   color: var(--elm2-white-dark);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  color: var(--elm2-white);
 }
 button.elm2[primary]:hover {
   background: var(--elm2-gray-darker);
   box-shadow: 0 0 0 2px var(--elm2-black);
 }
+button.elm2[primary] {
+  color: var(--elm2-white);
+}
 button.elm2[big] {
-  padding: 16px;
+  padding: 24px;
   font-size: 20px;
 }
 button.elm2[disabled] {

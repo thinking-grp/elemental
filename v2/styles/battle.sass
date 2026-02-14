@@ -1,0 +1,40 @@
+elm2-battle
+  display: block
+  width: 100%
+  margin: 1em 0
+
+.elm2-battle-container
+  display: flex
+  width: 100%
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2)
+  --radius: var(--elm2-default-radius)
+  overflow: hidden
+
+  & > div
+    /* --value に基づいて幅を決定 */
+    flex: var(--value) 0 0
+    min-width: fit-content
+    background: var(--elm2-white)
+    padding: 8px
+    box-sizing: border-box
+    overflow: hidden
+    white-space: nowrap
+    --radius: 0
+
+    /* 2つ目の要素の色を変える例 */
+    &:nth-child(2)
+      background-color: var(--elm2-sys-color-primary)
+      color: var(--elm2-white)
+      text-align: right
+
+    /* %が表示されている数字部分のフォントサイズを変更 */
+    & > div:first-child
+      font-size: 1.5rem
+      font-weight: bold
+      line-height: 1.2
+
+    /* 「160の投票」など、下のテキスト部分のサイズを微調整する場合 */
+    & > div:last-child
+      font-size: 0.8rem
+      opacity: 0.8
+      

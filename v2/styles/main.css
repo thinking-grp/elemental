@@ -4,6 +4,7 @@
   -webkit-font-smoothing: antialiased;
   corner-shape: superellipse(var(--elm2-corner-superellipse));
   border-radius: calc(var(--radius) * var(--elm2-corner-superellipse));
+  flex-shrink: 0;
 }
 
 :root {
@@ -18,9 +19,17 @@ body {
   flex-direction: column;
   flex-wrap: nowrap;
   gap: 5px;
+  padding: 24px 16px;
+  margin: 0;
+  min-height: 40px;
+  min-width: 40px;
 }
 
 h1, h2, h3, h4 {
   margin: 0.3em 0px;
   background: rgba(0, 0, 0, 0);
+}
+
+small {
+  opacity: 0.7;
 }/*# sourceMappingURL=main.css.map */

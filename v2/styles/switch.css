@@ -1,0 +1,48 @@
+elm2-switch {
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+  position: relative;
+  width: 72px;
+  height: 40px;
+}
+elm2-switch .elm2-switch-inner {
+  position: absolute;
+  width: 0;
+  height: 0;
+  margin: 0;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+}
+elm2-switch .elm2-switch-inner::before {
+  content: "";
+  display: block;
+  width: 72px;
+  height: 40px;
+  background-color: #ccc;
+  border-radius: 99px;
+  transition: background-color 0.2s;
+}
+elm2-switch .elm2-switch-inner::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 34px;
+  height: 34px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.4s var(--elm2-default-bezier);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+elm2-switch .elm2-switch-inner:checked::before {
+  background-color: var(--elm2-sys-color-primary);
+}
+elm2-switch .elm2-switch-inner:checked::after {
+  transform: translateX(32px);
+}
+elm2-switch .elm2-switch-inner:focus-visible::before {
+  outline: 2px solid #2196f3;
+  outline-offset: 2px;
+}/*# sourceMappingURL=switch.css.map */

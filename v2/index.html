@@ -9,7 +9,7 @@
 
     <link href="styles/color.css" rel="stylesheet">
 
-    <link href="styles/test.css" rel="stylesheet">
+    <!--link href="styles/test.css" rel="stylesheet"-->
 
 
     <link href="styles/main.css" rel="stylesheet">
@@ -158,9 +158,53 @@
         </elm2-input>
 
         <elm2-input id="search" disabled>
-            何か入力してください...
+            入力は不可能です...
         </elm2-input>
 
+
+        <h3>リスト</h3>
+
+
+        <link href="styles/list.css" rel="stylesheet">
+        <elm2-list-ul>
+            <elm2-list-li>リスト項目1</elm2-list-li>
+            <elm2-list-li>リスト項目2</elm2-list-li>
+            <elm2-list-li>リスト項目3</elm2-list-li>
+            <elm2-list-li>リスト項目4</elm2-list-li>
+            <elm2-list-li>リスト項目5</elm2-list-li>
+        </elm2-list-ul>
+
+
+        <elm2-list-ul>
+            <elm2-list-li>技術発展<br><small>2024年10月10日に<br>第一位で獲得</small></elm2-list-li>
+            <elm2-list-li>団結創建英雄<br><small>2023年7月27日に<br>共同創建メンバーとして獲得</small></elm2-list-li>
+        </elm2-list-ul>
+        
+
+        <h3>スナックバー</h3>
+
+
+        <link href="styles/snackbar.css" rel="stylesheet">
+
+        <elm2-button snackbar="こんにちは！">
+            デフォルト
+        </elm2-button>
+        <elm2-button snackbar="問題なく動作しています" bg="--elm2-blue-50">
+            青い
+        </elm2-button>
+
+
+        <h3>スイッチ</h3>
+
+        <link href="styles/switch.css" rel="stylesheet">
+        <elm2-switch id="setting1" name="notifications" checked></elm2-switch>
+
+
+        <h3>確率</h3>
+
+        <link href="styles/battle.css" rel="stylesheet">
+
+        <elm2-battle value="160,80" text="人の投票"></elm2-battle>
 
         
     </body>
@@ -233,6 +277,150 @@ function elm2Button() {
         customElements.define('elm2-button', Elm2Button);
     }
 }
+/**
+ * elm2 Snackbar Manager
+ * 単一インスタンス管理
+ */
+const Elm2Snackbar = (() => {
+    let snackbarEl = null;
+    let hideTimer = null;
+
+    function createSnackbar() {
+        if (snackbarEl) {
+            console.log('[elm2-snackbar] 既存Snackbarを再利用');
+            return snackbarEl;
+        }
+
+        snackbarEl = document.createElement('div');
+        snackbarEl.className = 'elm2-snackbar-container';
+
+        const messageEl = document.createElement('span');
+        messageEl.className = 'elm2-snackbar-message';
+
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'elm2-snackbar-close';
+        closeBtn.type = 'button';
+        closeBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="#FFFFFF"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>';
+        closeBtn.addEventListener('click', () => {
+            console.log('[elm2-snackbar] 閉じるボタン押下');
+            hide(true);
+        });
+
+        snackbarEl.appendChild(messageEl);
+        snackbarEl.appendChild(closeBtn);
+
+        document.body.appendChild(snackbarEl);
+        console.log('[elm2-snackbar] Snackbar生成完了', snackbarEl);
+
+        return snackbarEl;
+    }
+function show(message, duration = 3000, bgColor = null) {
+    if (!message) {
+        console.warn('[elm2-snackbar] messageが空です');
+        return;
+    }
+
+    const el = createSnackbar();
+    if (!el) {
+        console.error('[elm2-snackbar] Snackbar要素取得失敗');
+        return;
+    }
+
+    const messageEl = el.querySelector('.elm2-snackbar-message');
+    if (!messageEl) {
+        console.error('[elm2-snackbar] message要素が存在しません');
+        return;
+    }
+
+    messageEl.textContent = message;
+
+    if (bgColor) {
+        const resolvedBg = bgColor.startsWith('--') ? `var(${bgColor})` : bgColor;
+        el.style.backgroundColor = resolvedBg;
+    } else {
+        el.style.backgroundColor = '';
+    }
+
+    // --- 修正ポイント：表示処理 ---
+    // すでに表示されている場合はタイマー更新のみ、
+    // 新規（または非表示状態）の場合は少し待ってからクラスを付与
+    if (el.classList.contains('is-visible')) {
+        console.log('[elm2-snackbar] 更新:', message);
+    } else {
+        // 1ms〜10ms程度の待機を入れることで、ブラウザに「描画準備」をさせる
+        setTimeout(() => {
+            el.classList.add('is-visible');
+            console.log('[elm2-snackbar] 表示開始:', message);
+        }, 10); 
+    }
+
+    if (hideTimer) {
+        clearTimeout(hideTimer);
+    }
+
+    hideTimer = setTimeout(hide, duration);
+}
+
+    function hide(force = false) {
+        if (!snackbarEl) {
+            console.warn('[elm2-snackbar] 非表示対象が存在しません');
+            return;
+        }
+
+        snackbarEl.classList.remove('is-visible');
+        console.log('[elm2-snackbar] 非表示', force ? '(強制)' : '');
+
+        if (hideTimer) {
+            clearTimeout(hideTimer);
+            hideTimer = null;
+            console.log('[elm2-snackbar] タイマー解除完了');
+        }
+    }
+
+    return {
+        show,
+        hide
+    };
+})();
+
+function initElm2SnackbarButtons() {
+    const buttons = document.querySelectorAll('elm2-button');
+
+    if (!buttons || buttons.length === 0) {
+        console.error('[elm2-snackbar] elm2-button が取得できません');
+        return;
+    }
+
+    buttons.forEach(btn => {
+        if (!btn) {
+            console.warn('[elm2-snackbar] null要素を検出、スキップ');
+            return;
+        }
+
+        const innerButton = btn.querySelector('button.elm2');
+
+        if (!innerButton) {
+            console.warn('[elm2-snackbar] 内部buttonが存在しません', btn);
+            return;
+        }
+
+        innerButton.addEventListener('click', () => {
+            const message = btn.getAttribute('snackbar');
+            const bgColor = btn.getAttribute('bg');
+
+            if (!message) {
+                console.log('[elm2-snackbar] snackbar属性なし、スキップ');
+                return;
+            }
+
+            Elm2Snackbar.show(message, 3000, bgColor);
+        });
+
+        console.log('[elm2-snackbar] clickイベント登録完了', innerButton);
+    });
+}
+
+
 
 /**
  * コンポーネント定義: インプット (新規)
@@ -270,14 +458,123 @@ function initElm2Carousels() {
 }
 
 /**
+ * コンポーネント定義: リスト（UL）
+ */
+function elm2ListUl() {
+    class Elm2ListUl extends Elm2BaseElement {
+        connectedCallback() {
+            console.log('[elm2-list-ul] connected');
+
+            const container = this.upgradeElement('div', 'elm2-list-container');
+
+            if (!container) {
+                console.error('[elm2-list-ul] container生成失敗');
+                return;
+            }
+
+            container.classList.add('elm2');
+            console.log('[elm2-list-ul] container生成成功', container);
+        }
+    }
+
+    if (!customElements.get('elm2-list-ul')) {
+        customElements.define('elm2-list-ul', Elm2ListUl);
+        console.log('[elm2-list-ul] custom element 定義完了');
+    }
+}
+
+/**
+ * コンポーネント定義: スイッチ (Checkboxベース)
+ */
+function elm2Switch() {
+    class Elm2Switch extends Elm2BaseElement {
+        connectedCallback() {
+            // 内部に input 要素を作成
+            const inner = this.upgradeElement('input', 'elm2-switch-inner');
+            inner.type = 'checkbox';
+
+            // JSから直接 .checked でアクセスできるようにプロパティを定義
+            Object.defineProperty(this, 'checked', {
+                get: () => inner.checked,
+                set: (val) => { inner.checked = val; },
+                configurable: true
+            });
+
+            // .value も同様にブリッジ
+            Object.defineProperty(this, 'value', {
+                get: () => inner.value,
+                set: (val) => { inner.value = val; },
+                configurable: true
+            });
+        }
+    }
+
+    if (!customElements.get('elm2-switch')) {
+        customElements.define('elm2-switch', Elm2Switch);
+    }
+}
+
+
+/**
+ * コンポーネント定義: バトル (投票表示)
+ */
+function elm2Battle() {
+    class Elm2Battle extends Elm2BaseElement {
+        connectedCallback() {
+            // 内部コンテナを作成
+            const container = this.upgradeElement('div', 'elm2-battle-container');
+            const valueAttr = this.getAttribute('value') || "0,0";
+            const values = valueAttr.split(',').map(v => parseInt(v.trim(), 10) || 0);
+            const total = values.reduce((a, b) => a + b, 0);
+            
+            // 元々のテキスト（「の投票」など）を取得
+            const suffix = this.getAttribute('text') || "";
+
+            // 既存の内容をクリアして構造を再構築
+            container.innerHTML = '';
+
+            values.forEach(v => {
+                const percent = total > 0 ? Math.round((v / total) * 100) : 0;
+                
+                const item = document.createElement('div');
+                item.style.setProperty('--value', percent);
+                
+                const percentEl = document.createElement('div');
+                percentEl.textContent = `${percent}%`;
+                
+                const labelEl = document.createElement('div');
+                labelEl.textContent = `${v}${suffix}`;
+                
+                item.appendChild(percentEl);
+                item.appendChild(labelEl);
+                container.appendChild(item);
+            });
+        }
+    }
+
+    if (!customElements.get('elm2-battle')) {
+        customElements.define('elm2-battle', Elm2Battle);
+    }
+}
+
+// initElm2Components 内に elm2Battle(); を追加してください
+
+/**
  * 全コンポーネントの初期化実行
  */
 function initElm2Components() {
     checkCornerShapeSupport();
     elm2Button();
-    elm2Input(); // 追加されたコンポーネント
+    elm2Input();
+    elm2ListUl();
     initElm2Carousels();
+    initElm2SnackbarButtons();
+    elm2Switch();
+    elm2Battle(); // ←これを追加
+
+    console.log('全コンポーネント初期化完了');
 }
+
 
 // 実行
 if (document.readyState === 'loading') {
