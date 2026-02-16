@@ -3,6 +3,7 @@
 Elemental v2は、主にカスタムエレメント（Web Components）を活用した、軽量で一貫性のあるデザインを提供するUIコンポーネントライブラリです。
 
 ---
+[assets/Elemental-v1.pdf](https://github.com/thinking-grp/elemental/blob/main/assets/Elemental-v1.pdf)
 
 ## 1. 導入方法
 
@@ -178,3 +179,8 @@ Elemental v2は、主にカスタムエレメント（Web Components）を活用
 
 * **ブラウザ互換性**: `corner-shape: super-ellipse` をサポートしていないブラウザでは、自動的に代替のスタイル（角丸）が適用されます。
 * **動的生成**: JavaScriptによって、カスタムタグ内部に適切なHTML構造（`button` や `input` 等）が自動生成されます。
+仕様書の中には書いていなかったんですが、ボタンのデザインについてここで述べておきます。
+ボタンは、以下の画像のような設計になっています。
+背景は`#bbbbbb1e`(強調色2)、枠線は`#a1a1a1`(境界線)、影は`#bfbfbf55`(影)に指定してください。ダークモードの場合も同じように、強調色2、境界線、影、としてください。
+
+![](https://raw.githubusercontent.com/Sorakime/Sorakime.github.io/7290967327ff7b7c08d3ef19d3a3f6662411503d/mncr/project/elemental/button.jpg)
