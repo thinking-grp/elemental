@@ -1,0 +1,128 @@
+@charset "UTF-8";
+:root {
+  --elm2-test:#2d2e2f11;
+  --elm2-test-text:#191a1bd9;
+  --elm2-test-sub:#111314d8;
+  --elm2-red-0:#000000;
+  --elm2-red-10:#2f050c;
+  --elm2-red-20:#5f0a18;
+  --elm2-red-30:#8e1025;
+  --elm2-red-40:#be1531;
+  --elm2-red-50:#ED1A3D;
+  --elm2-red-60:#f04864;
+  --elm2-red-70:#f4758b;
+  --elm2-red-80:#f8a3b1;
+  --elm2-red-90:#fbd1d8;
+  --elm2-red-100:#FFFFFF;
+  --elm2-yellow-0:#000000;
+  --elm2-yellow-10:#332a00;
+  --elm2-yellow-20:#665500;
+  --elm2-yellow-30:#997f00;
+  --elm2-yellow-40:#ccaa00;
+  --elm2-yellow-50:#FFD400;
+  --elm2-yellow-60:#ffdc33;
+  --elm2-yellow-70:#ffe466;
+  --elm2-yellow-80:#ffec99;
+  --elm2-yellow-90:#fff3cc;
+  --elm2-yellow-100:#FFFFFF;
+  --elm2-green-0:#000000;
+  --elm2-green-10:#002315;
+  --elm2-green-20:#00462b;
+  --elm2-green-30:#006a40;
+  --elm2-green-40:#008d56;
+  --elm2-green-50:#00B06B;
+  --elm2-green-60:#33c089;
+  --elm2-green-70:#66cfa6;
+  --elm2-green-80:#99dfc4;
+  --elm2-green-90:#ccefe2;
+  --elm2-green-100:#FFFFFF;
+  --elm2-blue-0:#000000;
+  --elm2-blue-10:#061430;
+  --elm2-blue-20:#0d2860;
+  --elm2-blue-30:#133b91;
+  --elm2-blue-40:#1a4fc1;
+  --elm2-blue-50:#2063F1;
+  --elm2-blue-60:#4d82f4;
+  --elm2-blue-70:#79a2f7;
+  --elm2-blue-80:#a6c1f9;
+  --elm2-blue-90:#d2e0fc;
+  --elm2-blue-100:#FFFFFF;
+  --elm2-gray-0:#000000;
+  --elm2-gray-5:#070707;
+  --elm2-gray-10:#0F0F0F;
+  --elm2-gray-20:#272727;
+  --elm2-gray-30:#3F3F3F;
+  --elm2-gray-40:#4F4F4F;
+  --elm2-gray-50:#5F5F5F;
+  --elm2-gray-60:#6F6F6F;
+  --elm2-gray-70:#7F7F7F;
+  --elm2-gray-80:#8F8F8F;
+  --elm2-gray-90:#9F9F9F;
+  --elm2-gray-93:#AFAFAF;
+  --elm2-gray-95:#BFBFBF;
+  --elm2-gray-97:#D7D7D7;
+  --elm2-gray-98:#EFEFEF;
+  --elm2-gray-99:#F7F7F7;
+  --elm2-gray-100:#FFFFFF;
+  --elm2-black: var(--elm2-gray-0) /* 黒 */;
+  --elm2-black-light: var(--elm2-gray-10) /* 明るい黒（メインテキスト等） */;
+  --elm2-gray-darker: var(--elm2-gray-30) /* かなり濃いグレー */;
+  --elm2-gray-dark: var(--elm2-gray-50) /* 濃いグレー */;
+  --elm2-gray: var(--elm2-gray-70) /* 中間色グレー */;
+  --elm2-gray-light: var(--elm2-gray-90) /* 薄いグレー */;
+  --elm2-gray-lighter: var(--elm2-gray-95) /* かなり薄いグレー */;
+  --elm2-white-dark: var(--elm2-gray-98) /* 少し暗い白（背景のセクション分け等） */;
+  --elm2-white: var(--elm2-gray-100) /* 純粋な白 */;
+  /* --- Brand / Accent Colors (ブランド・アクセントカラー) --- */
+  --elm2-red: var(--elm2-red-50) /* メインのレッド */;
+  --elm2-yellow: var(--elm2-yellow-50) /* メインのイエロー */;
+  --elm2-green: var(--elm2-green-50) /* メインのグリーン */;
+  --elm2-blue: var(--elm2-blue-50) /* メインのブルー */;
+  /* --- Semantic Aliases (用途別の別名定義例) --- */
+  --elm2-text-primary: var(--elm2-black-light);
+  --elm2-text-body: var(--elm2-gray-darker);
+  --elm2-border: var(--elm2-gray-lighter);
+  --elm2-bg-surface: var(--elm2-white-dark);
+  /* --- 2. Semantic Mappings: Light Mode (Default) ---*/
+  --elm2-sys-color-primary:var(--elm2-gray-0);
+  --elm2-sys-color-on-primary:var(--elm2-gray-100);
+  --elm2-sys-color-primary-container:var(--elm2-gray-90);
+  --elm2-sys-color-on-primary-container:var(--elm2-gray-10);
+  --elm2-sys-color-secondary:var(--elm2-blue-50);
+  --elm2-sys-color-on-secondary:var(--elm2-gray-100);
+  --elm2-sys-color-secondary-container:var(--elm2-blue-90);
+  --elm2-sys-color-on-secondary-container:var(--elm2-blue-10);
+  --elm2-sys-color-surface:var(--elm2-gray-98);
+  /* 배경: --elm2-white-dark*/
+  --elm2-sys-color-on-surface:var(--elm2-gray-10);
+  /* 텍스트: --elm2-black-light*/
+  --elm2-sys-color-surface-variant:var(--elm2-gray-95);
+  --elm2-sys-color-on-surface-variant:var(--elm2-gray-40);
+  --elm2-sys-color-outline:var(--elm2-gray-80);
+  --elm2-sys-color-error:var(--elm2-red-50);
+  --elm2-sys-color-on-error:var(--elm2-gray-100);
+}
+
+/* --- 3. Semantic Mappings: Dark Mode ---*/
+@media (prefers-color-scheme: dark) {
+  :root {
+    --elm2-test:#e4e8ed11;
+    --elm2-test-text:#e3e8edd9;
+    --elm2-test-sub:#dce7edd8;
+    --elm2-sys-color-primary:var(--elm2-gray-100);
+    --elm2-sys-color-on-primary:var(--elm2-gray-0);
+    --elm2-sys-color-primary-container:var(--elm2-gray-30);
+    --elm2-sys-color-on-primary-container:var(--elm2-gray-98);
+    --elm2-sys-color-secondary:var(--elm2-blue-70);
+    --elm2-sys-color-on-secondary:var(--elm2-gray-10);
+    --elm2-sys-color-surface:var(--elm2-gray-0);
+    /* 배경: --elm2-black*/
+    --elm2-sys-color-on-surface:var(--elm2-gray-98);
+    /* 텍스트: --elm2-white-dark*/
+    --elm2-sys-color-surface-variant:var(--elm2-gray-20);
+    --elm2-sys-color-on-surface-variant:var(--elm2-gray-80);
+    --elm2-sys-color-outline:var(--elm2-gray-50);
+    --elm2-sys-color-error:var(--elm2-red-70);
+    --elm2-sys-color-on-error:var(--elm2-red-10);
+  }
+}/*# sourceMappingURL=color.css.map */

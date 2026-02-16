@@ -1,0 +1,17 @@
+.elm2-list-container.elm2 {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: transparent;
+  --radius: var(--elm2-default-radius);
+  overflow: scroll;
+}
+.elm2-list-container .elm2-list-ul {
+  background: transparent;
+}
+
+elm2-list-li {
+  background: var(--elm2-white);
+  padding: 16px;
+  --radius: calc(var(--elm2-default-radius) / 3);
+}/*# sourceMappingURL=list.css.map */

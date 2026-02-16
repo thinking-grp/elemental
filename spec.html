@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elemental v2 Spec Viewer</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
+
+    <link href="/v2/styles/color.css" rel="stylesheet">
+    <link href="/v2/styles/main.css" rel="stylesheet">
+    <link href="/v2/styles/buttons.css" rel="stylesheet">
+    <link href="/v2/styles/carousel.css" rel="stylesheet">
+    <link href="/v2/styles/input.css" rel="stylesheet">
+    <link href="/v2/styles/list.css" rel="stylesheet">
+    <link href="/v2/styles/snackbar.css" rel="stylesheet">
+    <link href="/v2/styles/switch.css" rel="stylesheet">
+    <link href="/v2/styles/battle.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
+    <style>
+        /* CSSの読み込み設定に基づいたフォントと色 */
+        * {
+            font-family: "Barlow", "Noto Sans JP", sans-serif !important;
+        }
+
+        body {
+            background: var(--elm2-white-dark);
+            padding: 24px;
+            margin: 0;
+            line-height: 1.5 !important;
+            -webkit-font-smoothing: antialiased;
+            padding-top:100px;
+        }
+
+        #viewer-root {
+            max-width: 1200px;
+            margin: 0 auto;
+            width:100%;
+        }
+
+
+        /* --- 以降、hrとhrの間を囲む白いコンテナ --- */
+        .spec-group {
+            background-color: var(--elm2-white);
+            margin: 0px;
+            padding: 32px;
+            
+            /* 仕様通りの超楕円 */
+            --radius: calc(var(--elm2-default-radius) * 3);
+            corner-shape: superellipse(var(--elm2-corner-superellipse));
+            border-radius: calc(var(--radius) * var(--elm2-corner-superellipse));
+            
+            box-shadow: 0 2px 34px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+
+            width:calc(100% - 64px);
+            margin-bottom:16px;
+        }
+
+        /* 2カラムレイアウト */
+        .spec-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            align-items: stretch;
+        }
+
+        /* コードペイン: 文字白、背景黒 */
+        .spec-code-pane {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+            padding: 20px;
+            margin: 0 !important;
+            font-size: 13px;
+            overflow-x: auto;
+            
+            --radius: var(--elm2-default-radius);
+            corner-shape: superellipse(var(--elm2-corner-superellipse));
+            border-radius: calc(var(--radius) * var(--elm2-corner-superellipse));
+        }
+
+        .spec-code-pane code {
+            font-family: monospace !important;
+            color: #ffffff !important;
+        }
+
+        /* サンプルペイン: プレビュー領域 */
+        .spec-sample-pane {
+            padding: 24px;
+            background-color: var(--elm2-white-dark);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            justify-content: center;
+            border: 1px solid var(--elm2-gray-lighter);
+            
+            --radius: var(--elm2-default-radius);
+            corner-shape: superellipse(var(--elm2-corner-superellipse));
+            border-radius: calc(var(--radius) * var(--elm2-corner-superellipse));
+        }
+
+        /* テーブル */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid var(--elm2-gray-lighter);
+            text-align: left;
+        }
+
+        /* hr自体は非表示（divの境界で表現するため） */
+        hr { display: none; }
+
+        @media (max-width: 850px) {
+            .spec-container { grid-template-columns: 1fr; }
+        }
+        h1{
+            font-weight:600;
+        }
+        h2,h3{
+            font-weight:500;
+        }
+        video{
+            mix-blend-mode: multiply;
+            height:64px;
+            transform: translateZ(0);
+    position: fixed;
+    top:24px;
+    right:50vw;
+    z-index:1001;
+    pointer-events:none;
+        }
+        header {
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    position: fixed;
+    border-radius: 26px;
+    backdrop-filter: blur(24px);
+    isolation: isolate;
+    top:24px;
+    left:50vw;
+            height:64px;
+            gap:16px;
+            padding-left:170px;
+            padding-right:24px;
+    z-index:1000;
+    box-shadow: 0 8px 48px rgba(0, 0, 0, 0.15);
+    transform: translateX(-50%);
+}
+a{
+        text-decoration: none;
+        color:#000;
+}
+    </style>
+</head>
+<body>
+
+    <video autoplay muted playsinline>
+        <source src="logo.webm" type="video/webm">
+        <source src="logo.mov" type="video/quicktime">
+        
+        <p>お使いのブラウザは動画の再生に対応していません。</p>
+    </video>
+    
+<header>
+        <a href="/about/">About</a>
+        <a href="/project/">Project</a>
+        <a href="/blog/">Blog</a>
+</header>
+
+    <div id="viewer-root">読み込み中...</div>
+
+    <script>
+        async function loadMarkdown() {
+            try {
+                const response = await fetch('spec.md');
+                const mdText = await response.text();
+                
+                // hr（---）で分割
+                const sections = mdText.split(/\n\s*---\s*\n/);
+                let finalHtml = "";
+                let totalCodeBlocks = 0; // 全体を通したコードブロックのカウント
+
+                sections.forEach((section, index) => {
+                    const tokens = marked.lexer(section);
+                    let sectionContent = "";
+
+                    tokens.forEach(token => {
+                        if (token.type === 'code') {
+                            totalCodeBlocks++;
+                            const highlighted = hljs.highlight(token.text, {language: 'html'}).value;
+
+                            if (totalCodeBlocks === 1) {
+                                // 1番最初のコードブロック（導入）はプレビューなし
+                                sectionContent += `<pre class="spec-code-pane"><code>${highlighted}</code></pre>`;
+                            } else {
+                                // 2番目以降は2カラムプレビュー
+                                sectionContent += `
+                                    <div class="spec-container">
+                                        <pre class="spec-code-pane"><code>${highlighted}</code></pre>
+                                        <div class="spec-sample-pane">${token.text}</div>
+                                    </div>`;
+                            }
+                        } else {
+                            sectionContent += marked.parse(token.raw);
+                        }
+                    });
+
+                    // インデックス0（一番最初）は白いdivで囲まず intro-section クラスを付与
+                    if (index === 0) {
+                        finalHtml += `<div class="intro-section">${sectionContent}</div>`;
+                    } else {
+                        finalHtml += `<div class="spec-group">${sectionContent}</div>`;
+                    }
+                });
+
+                document.getElementById('viewer-root').innerHTML = finalHtml;
+
+            } catch (err) {
+                document.getElementById('viewer-root').innerHTML = "Error loading spec.md";
+            }
+        }
+
+        window.onload = loadMarkdown;
+    </script>
+
+    <script>
+        class Elm2BaseElement extends HTMLElement{upgradeElement(tagName,className){if(this.querySelector(`:scope > ${tagName}.${className}`))return;const inner = document.createElement(tagName);inner.classList.add(className);const children = Array.from(this.childNodes);this.syncAttributes(this,inner);children.forEach(child =>{inner.appendChild(child);});this.appendChild(inner);const observer = new MutationObserver(()=> this.syncAttributes(this,inner));observer.observe(this,{attributes:true});return inner;}syncAttributes(source,target){Array.from(source.attributes).forEach(attr =>{if(attr.name !== 'class'){target.setAttribute(attr.name,attr.value);}});}}function checkCornerShapeSupport(){const testEl = document.createElement('div');const props = ['corner-shape','-webkit-corner-shape','border-corner-shape'];const isSupported = props.some(prop =>{testEl.style[prop] = 'super-ellipse';return testEl.style[prop] !== '';});if(!isSupported){document.documentElement.style.setProperty('--elm2-corner-superellipse','1');console.log('corner-shape:Not Supported');}}function elm2Button(){class Elm2Button extends Elm2BaseElement{connectedCallback(){this.upgradeElement('button','elm2');}}if(!customElements.get('elm2-button')){customElements.define('elm2-button',Elm2Button);}}const Elm2Snackbar =(()=>{let snackbarEl = null;let hideTimer = null;function createSnackbar(){if(snackbarEl){console.log('[elm2-snackbar] 既存Snackbarを再利用');return snackbarEl;}snackbarEl = document.createElement('div');snackbarEl.className = 'elm2-snackbar-container';const messageEl = document.createElement('span');messageEl.className = 'elm2-snackbar-message';const closeBtn = document.createElement('button');closeBtn.className = 'elm2-snackbar-close';closeBtn.type = 'button';closeBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="#FFFFFF"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>';closeBtn.addEventListener('click',()=>{console.log('[elm2-snackbar] 閉じるボタン押下');hide(true);});snackbarEl.appendChild(messageEl);snackbarEl.appendChild(closeBtn);document.body.appendChild(snackbarEl);console.log('[elm2-snackbar] Snackbar生成完了',snackbarEl);return snackbarEl;}function show(message,duration = 3000,bgColor = null){if(!message){console.warn('[elm2-snackbar] messageが空です');return;}const el = createSnackbar();if(!el){console.error('[elm2-snackbar] Snackbar要素取得失敗');return;}const messageEl = el.querySelector('.elm2-snackbar-message');if(!messageEl){console.error('[elm2-snackbar] message要素が存在しません');return;}messageEl.textContent = message;if(bgColor){const resolvedBg = bgColor.startsWith('--')? `var(${bgColor})`:bgColor;el.style.backgroundColor = resolvedBg;}else{el.style.backgroundColor = '';}if(el.classList.contains('is-visible')){console.log('[elm2-snackbar] 更新:',message);}else{setTimeout(()=>{el.classList.add('is-visible');console.log('[elm2-snackbar] 表示開始:',message);},10);}if(hideTimer){clearTimeout(hideTimer);}hideTimer = setTimeout(hide,duration);}function hide(force = false){if(!snackbarEl){console.warn('[elm2-snackbar] 非表示対象が存在しません');return;}snackbarEl.classList.remove('is-visible');console.log('[elm2-snackbar] 非表示',force ? '(強制)':'');if(hideTimer){clearTimeout(hideTimer);hideTimer = null;console.log('[elm2-snackbar] タイマー解除完了');}}return{show,hide};})();function initElm2SnackbarButtons(){const buttons = document.querySelectorAll('elm2-button');if(!buttons || buttons.length === 0){console.error('[elm2-snackbar] elm2-button が取得できません');return;}buttons.forEach(btn =>{if(!btn){console.warn('[elm2-snackbar] null要素を検出、スキップ');return;}const innerButton = btn.querySelector('button.elm2');if(!innerButton){console.warn('[elm2-snackbar] 内部buttonが存在しません',btn);return;}innerButton.addEventListener('click',()=>{const message = btn.getAttribute('snackbar');const bgColor = btn.getAttribute('bg');if(!message){console.log('[elm2-snackbar] snackbar属性なし、スキップ');return;}Elm2Snackbar.show(message,3000,bgColor);});console.log('[elm2-snackbar] clickイベント登録完了',innerButton);});}function elm2Input(){class Elm2Input extends Elm2BaseElement{connectedCallback(){const innerInput = this.upgradeElement('input','elm2');innerInput.setAttribute('autocomplete','off');const textContent = innerInput.textContent.trim();if(textContent && !innerInput.hasAttribute('placeholder')){innerInput.setAttribute('placeholder',textContent);innerInput.textContent = '';}}}if(!customElements.get('elm2-input')){customElements.define('elm2-input',Elm2Input);}}function initElm2Carousels(){const carousels = document.querySelectorAll('elm2-carousel');carousels.forEach((el)=>{el.classList.add('elm2');});}function elm2ListUl(){class Elm2ListUl extends Elm2BaseElement{connectedCallback(){console.log('[elm2-list-ul] connected');const container = this.upgradeElement('div','elm2-list-container');if(!container){console.error('[elm2-list-ul] container生成失敗');return;}container.classList.add('elm2');console.log('[elm2-list-ul] container生成成功',container);}}if(!customElements.get('elm2-list-ul')){customElements.define('elm2-list-ul',Elm2ListUl);console.log('[elm2-list-ul] custom element 定義完了');}}function elm2Switch(){class Elm2Switch extends Elm2BaseElement{connectedCallback(){const inner = this.upgradeElement('input','elm2-switch-inner');inner.type = 'checkbox';Object.defineProperty(this,'checked',{get:()=> inner.checked,set:(val)=>{inner.checked = val;},configurable:true});Object.defineProperty(this,'value',{get:()=> inner.value,set:(val)=>{inner.value = val;},configurable:true});}}if(!customElements.get('elm2-switch')){customElements.define('elm2-switch',Elm2Switch);}}function elm2Battle(){class Elm2Battle extends Elm2BaseElement{connectedCallback(){const container = this.upgradeElement('div','elm2-battle-container');const valueAttr = this.getAttribute('value')|| "0,0";const values = valueAttr.split(',').map(v => parseInt(v.trim(),10)|| 0);const total = values.reduce((a,b)=> a + b,0);const suffix = this.getAttribute('text')|| "";container.innerHTML = '';values.forEach(v =>{const percent = total > 0 ? Math.round((v / total)* 100):0;const item = document.createElement('div');item.style.setProperty('--value',percent);const percentEl = document.createElement('div');percentEl.textContent = `${percent}%`;const labelEl = document.createElement('div');labelEl.textContent = `${v}${suffix}`;item.appendChild(percentEl);item.appendChild(labelEl);container.appendChild(item);});}}if(!customElements.get('elm2-battle')){customElements.define('elm2-battle',Elm2Battle);}}function initElm2Components(){checkCornerShapeSupport();elm2Button();elm2Input();elm2ListUl();initElm2Carousels();initElm2SnackbarButtons();elm2Switch();elm2Battle();console.log('全コンポーネント初期化完了');}if(document.readyState === 'loading'){document.addEventListener('DOMContentLoaded',initElm2Components);}else{initElm2Components();}
+    </script>
+</body>
+</html>
