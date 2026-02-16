@@ -348,6 +348,7 @@ function elm2Battle() {
 /**
  * 全コンポーネントの初期化実行
  */
+ 
 function initElm2Components() {
     checkCornerShapeSupport();
     elm2Button();
